@@ -14,7 +14,7 @@ function addApiKey(queryObject){
 
 export function createUrlFromQueryObject(queryObjectWithApiKey) {
     const queryString = new URLSearchParams(queryObjectWithApiKey).toString();
-    const url = baseUrlTop + "?" + queryString;
+    const url = baseUrl + "?" + queryString;
     return url;
 }
 
