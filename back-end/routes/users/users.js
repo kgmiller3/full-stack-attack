@@ -35,6 +35,6 @@ router.post('/authenticate', async (req, res) => {
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-});git 
+});
 
 export default router;
