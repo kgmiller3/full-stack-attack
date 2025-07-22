@@ -10,7 +10,7 @@ if (!apiKey) {
 
 const baseUrl = "https://newsapi.org/v2/top-headlines";
 
-function addApiKey(queryObject) {
+function addApiKey(queryObject) { 
   return { ...queryObject, apiKey: apiKey };
 }
 

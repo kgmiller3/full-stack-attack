@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
     try {
         const data = fs.readFileSync('queries.json', 'utf8');
-               res.status(200).send(data);
+        res.status(200).send(data);
     } catch (err) {
         if (res.status)
             console.error(err);
