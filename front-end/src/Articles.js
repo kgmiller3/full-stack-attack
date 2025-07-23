@@ -2,19 +2,21 @@ import { useState } from "react";
 
 export function Articles(params) {
   let articles = params.data.articles ? params.data.articles : [];
-  let queryName = params.query.queryName ? params.query.queryName : "na";
+  let queryName = params.query?.queryName || "No query selected";
   let articleCount = params.data.totalResults ? params.data.totalResults : 0;
   const [showDetails, setShowDetails] = useState(false);
 
   function formatQueryDetails(query) {
     const details = [];
-    for (const [key, value] of Object.entries(query)) {
-      if (value && key !== "queryName") {
-        details.push(
-          <li key={key} style={{ marginBottom: "0.25rem" }}>
-            <strong>{key}:</strong> {value}
-          </li>
-        );
+    if (query) {
+      for (const [key, value] of Object.entries(query)) {
+        if (value && key !== "queryName") {
+          details.push(
+            <li key={key} style={{ marginBottom: "0.25rem" }}>
+              <strong>{key}:</strong> {value}
+            </li>
+          );
+        }
       }
     }
     return details;
@@ -70,13 +72,17 @@ export function Articles(params) {
             </div>
           </div>
 
-          <button
-            onClick={toggleDetails}
-            className="btn btn-secondary btn-small"
-          >
-            <i className={`fas ${showDetails ? "fa-eye-slash" : "fa-eye"}`}></i>
-            {showDetails ? "Hide Details" : "Show Details"}
-          </button>
+          {params.query && (
+            <button
+              onClick={toggleDetails}
+              className="btn btn-secondary btn-small"
+            >
+              <i
+                className={`fas ${showDetails ? "fa-eye-slash" : "fa-eye"}`}
+              ></i>
+              {showDetails ? "Hide Details" : "Show Details"}
+            </button>
+          )}
         </div>
 
         {showDetails && (
