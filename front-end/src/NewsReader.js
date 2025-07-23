@@ -1,13 +1,13 @@
 import { QueryForm } from "./QueryForm";
 import { Articles } from "./Articles";
 import { useState, useEffect } from "react";
-import { exampleQuery, exampleData } from "./data";
+import { exampleQuery } from "./data";
 import { SavedQueries } from "./SavedQueries";
 import { LoginForm } from "./LoginForm";
 
 export function NewsReader() {
-  const [query, setQuery] = useState(exampleQuery); // latest query send to newsapi
-  const [data, setData] = useState(exampleData); // current data returned from newsapi
+  const [query, setQuery] = useState(null); // no initial query
+  const [data, setData] = useState({ articles: [], totalResults: 0 }); // empty initial data
   const [queryFormObject, setQueryFormObject] = useState({ ...exampleQuery });
   const [currentUser, setCurrentUser] = useState(null);
   const [credentials, setCredentials] = useState({ user: "", password: "" });
@@ -15,10 +15,12 @@ export function NewsReader() {
   const urlQueries = "/queries";
   const urlUsersAuth = "/users/authenticate";
 
-  const [savedQueries, setSavedQueries] = useState([{ ...exampleQuery }]);
+  const [savedQueries, setSavedQueries] = useState([]);
 
   useEffect(() => {
-    getNews(query);
+    if (query && query.q) {
+      getNews(query);
+    }
   }, [query]);
 
   useEffect(() => {
@@ -89,6 +91,24 @@ export function NewsReader() {
   function onSavedQuerySelect(selectedQuery) {
     setQueryFormObject(selectedQuery);
     setQuery(selectedQuery);
+  }
+
+  function onResetSavedQueries() {
+    const confirmed = window.confirm(
+      "Are you sure you want to erase the list? This action cannot be undone."
+    );
+
+    if (confirmed) {
+      // Reset to an empty list
+      const resetList = [];
+      saveQueryList(resetList);
+      setSavedQueries(resetList);
+
+      // Clear the current query and article data
+      setQuery(null);
+      setData({ articles: [], totalResults: 0 });
+      setQueryFormObject({ ...exampleQuery });
+    }
   }
 
   function currentUserMatches(user) {
@@ -182,8 +202,10 @@ export function NewsReader() {
         <div className="card-content">
           <SavedQueries
             savedQueries={savedQueries}
-            selectedQueryName={query.queryName}
+            selectedQueryName={query?.queryName}
             onQuerySelect={onSavedQuerySelect}
+            onResetQueries={onResetSavedQueries}
+            currentUser={currentUser}
           />
         </div>
       </div>
