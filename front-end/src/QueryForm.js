@@ -60,8 +60,7 @@ export function QueryForm(params) {
       </form>
       <div
         className={currentUserIsAdmin() ? "visible" : "hidden"}
-        style={{ border: "solid black 1px" }}
-      >
+        style={{ border: "solid black 1px" }}>
         {/* Extra fields */}
         <div>
           <label htmlFor="language">Language: </label>
@@ -69,8 +68,7 @@ export function QueryForm(params) {
             id="language"
             name="language"
             value={params.formObject.language}
-            onChange={handleChange}
-          >
+            onChange={handleChange}>
             <option value="">All</option>
             <option value="en">English</option>
             <option value="es">Spanish</option>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { exampleQuery, exampleData } from "./data";
 import { SavedQueries } from "./SavedQueries";
 import { LoginForm } from "./LoginForm";
+import cannedQueries from "./cannedQueries.json"; // Importing canned queries
 
 export function NewsReader() {
   const [query, setQuery] = useState(exampleQuery); // latest query send to newsapi
@@ -23,9 +24,16 @@ export function NewsReader() {
 
   useEffect(() => {
     getQueryList();
-  }, []);
+  }, [login]);
 
   async function getQueryList() {
+    if (currentUser === null) {
+      // if no user is logged in, we cannot retrieve saved queries
+      //   alert("Log in if you want to create new queries!");
+      setSavedQueries(cannedQueries);
+
+      return;
+    }
     try {
       const response = await fetch(urlQueries);
       if (response.ok) {
@@ -53,6 +61,9 @@ export function NewsReader() {
         if (response.status === 200) {
           setCurrentUser({ ...credentials });
           setCredentials({ user: "", password: "" });
+          setQueryFormObject({ queryName: "", q: "", language: "", pageSize: "" });
+          getQueryList();
+
         } else {
           alert(
             "Error during authentication! " +
@@ -158,15 +169,17 @@ export function NewsReader() {
       />
       <div>
         <section className="parent">
-          <div className="box">
-            <span className="title">Query Form</span>
-            <QueryForm
-              currentUser={currentUser}
-              setFormObject={setQueryFormObject}
-              formObject={queryFormObject}
-              submitToParent={onFormSubmit}
-            />
-          </div>
+          {currentUser !== null && (
+            <div className="box">
+              <span className="title">Query Form</span>
+              <QueryForm
+                currentUser={currentUser}
+                setFormObject={setQueryFormObject}
+                formObject={queryFormObject}
+                submitToParent={onFormSubmit}
+              />
+            </div>
+          )}
           <div className="box">
             <span className="title">Saved Queries</span>
             <SavedQueries
