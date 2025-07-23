@@ -149,37 +149,53 @@ export function NewsReader() {
   }
 
   return (
-    <div>
-      <LoginForm
-        login={login}
-        credentials={credentials}
-        currentUser={currentUser}
-        setCredentials={setCredentials}
-      />
-      <div>
-        <section className="parent">
-          <div className="box">
-            <span className="title">Query Form</span>
-            <QueryForm
-              currentUser={currentUser}
-              setFormObject={setQueryFormObject}
-              formObject={queryFormObject}
-              submitToParent={onFormSubmit}
-            />
-          </div>
-          <div className="box">
-            <span className="title">Saved Queries</span>
-            <SavedQueries
-              savedQueries={savedQueries}
-              selectedQueryName={query.queryName}
-              onQuerySelect={onSavedQuerySelect}
-            />
-          </div>
-          <div className="box">
-            <span className="title">Articles List</span>
-            <Articles query={query} data={data} />
-          </div>
-        </section>
+    <div className="main-container">
+      <div className="login-container">
+        <LoginForm
+          login={login}
+          credentials={credentials}
+          currentUser={currentUser}
+          setCredentials={setCredentials}
+        />
+      </div>
+
+      <div className="card-modern">
+        <div className="card-header">
+          <i className="fas fa-search"></i>
+          <span>Create Query</span>
+        </div>
+        <div className="card-content">
+          <QueryForm
+            currentUser={currentUser}
+            setFormObject={setQueryFormObject}
+            formObject={queryFormObject}
+            submitToParent={onFormSubmit}
+          />
+        </div>
+      </div>
+
+      <div className="card-modern">
+        <div className="card-header">
+          <i className="fas fa-bookmark"></i>
+          <span>Saved Queries</span>
+        </div>
+        <div className="card-content">
+          <SavedQueries
+            savedQueries={savedQueries}
+            selectedQueryName={query.queryName}
+            onQuerySelect={onSavedQuerySelect}
+          />
+        </div>
+      </div>
+
+      <div className="card-modern articles-card">
+        <div className="card-header">
+          <i className="fas fa-newspaper"></i>
+          <span>Latest Articles</span>
+        </div>
+        <div className="articles-content">
+          <Articles query={query} data={data} />
+        </div>
       </div>
     </div>
   );

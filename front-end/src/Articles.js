@@ -11,7 +11,7 @@ export function Articles(params) {
     for (const [key, value] of Object.entries(query)) {
       if (value && key !== "queryName") {
         details.push(
-          <li key={key}>
+          <li key={key} style={{ marginBottom: "0.25rem" }}>
             <strong>{key}:</strong> {value}
           </li>
         );
@@ -26,49 +26,102 @@ export function Articles(params) {
 
   return (
     <div>
-      <div style={{ marginBottom: "10px" }}>
-        Query: {queryName}
-        <br />
-        Count: {articleCount}
-        <br />
-        <button
-          onClick={toggleDetails}
+      <div style={{ marginBottom: "1.5rem" }}>
+        <div
           style={{
-            fontSize: "12px",
-            padding: "4px 8px",
-            backgroundColor: "#f0f0f0",
-            border: "1px solid #ccc",
-            borderRadius: "3px",
-            cursor: "pointer",
-            marginTop: "5px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "1rem",
+            padding: "1rem",
+            background: "#f8f9fa",
+            borderRadius: "8px",
+            border: "2px solid #e2e8f0",
           }}
         >
-          {showDetails ? "Hide Details" : "Show Details"}
-        </button>
+          <div>
+            <div
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: "600",
+                color: "#2d3748",
+                marginBottom: "0.25rem",
+              }}
+            >
+              <i
+                className="fas fa-search"
+                style={{ marginRight: "0.5rem", color: "#667eea" }}
+              ></i>
+              {queryName}
+            </div>
+            <div
+              style={{
+                fontSize: "0.9rem",
+                color: "#718096",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
+              <i className="fas fa-newspaper"></i>
+              <span>{articleCount} articles found</span>
+              <span>•</span>
+              <span>Showing {articles.length}</span>
+            </div>
+          </div>
+
+          <button
+            onClick={toggleDetails}
+            className="btn btn-secondary btn-small"
+          >
+            <i className={`fas ${showDetails ? "fa-eye-slash" : "fa-eye"}`}></i>
+            {showDetails ? "Hide Details" : "Show Details"}
+          </button>
+        </div>
+
         {showDetails && (
           <div
             style={{
-              backgroundColor: "#f9f9f9",
-              padding: "8px",
-              margin: "8px 0",
-              border: "1px solid #e0e0e0",
-              borderRadius: "4px",
-              fontSize: "14px",
-              color: "#666",
+              background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+              padding: "1rem",
+              margin: "0 0 1rem 0",
+              border: "2px solid #dee2e6",
+              borderRadius: "8px",
+              fontSize: "0.9rem",
+              color: "#495057",
             }}
           >
-            <strong>Query Details:</strong>
-            <ul style={{ margin: "5px 0", paddingLeft: "20px" }}>
+            <div
+              style={{
+                fontWeight: "600",
+                marginBottom: "0.5rem",
+                color: "#343a40",
+              }}
+            >
+              <i
+                className="fas fa-info-circle"
+                style={{ marginRight: "0.5rem" }}
+              ></i>
+              Query Details:
+            </div>
+            <ul
+              style={{
+                margin: "0",
+                paddingLeft: "1.5rem",
+                color: "#6c757d",
+              }}
+            >
               {formatQueryDetails(params.query)}
             </ul>
           </div>
         )}
       </div>
-      <ol
+
+      <div
         style={{
-          fontFamily: "Arial, sans-serif",
-          lineHeight: "1.4",
-          paddingLeft: "20px",
+          display: "grid",
+          gap: "1rem",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
         }}
       >
         {articles.map((item, idx) => {
@@ -76,78 +129,197 @@ export function Articles(params) {
             if (item.title) {
               if (item.title === "[Removed]") {
                 return (
-                  <li
+                  <div
                     key={idx}
                     style={{
-                      fontSize: "14px",
-                      marginBottom: "8px",
-                      color: "#999",
+                      padding: "1rem",
+                      background: "#f8d7da",
+                      border: "1px solid #f5c6cb",
+                      borderRadius: "8px",
+                      color: "#721c24",
+                      textAlign: "center",
+                      fontStyle: "italic",
                     }}
                   >
-                    Was Removed
-                  </li>
+                    <i
+                      className="fas fa-exclamation-triangle"
+                      style={{ marginRight: "0.5rem" }}
+                    ></i>
+                    Article was removed
+                  </div>
                 );
               }
-              let trimTitle = item.title.substring(0, 100);
+
+              let trimTitle = item.title.substring(0, 120);
               return (
-                <li
+                <article
                   key={idx}
                   style={{
-                    fontSize: "14px",
-                    marginBottom: "8px",
+                    background: "white",
+                    padding: "1.25rem",
+                    borderRadius: "12px",
+                    border: "1px solid #e2e8f0",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+                    transition: "all 0.2s ease",
+                    cursor: "pointer",
                   }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 8px 25px rgba(0, 0, 0, 0.1)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow =
+                      "0 2px 8px rgba(0, 0, 0, 0.05)";
+                  }}
+                  onClick={() => window.open(item.url, "_blank")}
                 >
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noreferrer"
+                  <div style={{ marginBottom: "0.75rem" }}>
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: "1rem",
+                        fontWeight: "600",
+                        lineHeight: "1.4",
+                        color: "#2d3748",
+                        fontFamily: "Merriweather, serif",
+                      }}
+                    >
+                      {trimTitle}
+                      {item.title.length > 120 ? "..." : ""}
+                    </h3>
+                  </div>
+
+                  {item.description && (
+                    <p
+                      style={{
+                        margin: "0 0 1rem 0",
+                        fontSize: "0.875rem",
+                        color: "#718096",
+                        lineHeight: "1.5",
+                      }}
+                    >
+                      {item.description.substring(0, 150)}
+                      {item.description.length > 150 ? "..." : ""}
+                    </p>
+                  )}
+
+                  <div
                     style={{
-                      textDecoration: "none",
-                      color: "#0066cc",
-                      fontSize: "14px",
-                      fontFamily: "Georgia, serif",
-                      lineHeight: "1.3",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      marginTop: "1rem",
+                      paddingTop: "1rem",
+                      borderTop: "1px solid #e2e8f0",
                     }}
-                    onMouseOver={(e) =>
-                      (e.target.style.textDecoration = "underline")
-                    }
-                    onMouseOut={(e) => (e.target.style.textDecoration = "none")}
                   >
-                    {trimTitle}
-                    {item.title.length > 100 ? "..." : ""}
-                  </a>
-                </li>
+                    <div
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "#a0aec0",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      {item.source && (
+                        <>
+                          <i className="fas fa-globe"></i>
+                          <span>{item.source.name}</span>
+                        </>
+                      )}
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        color: "#667eea",
+                        fontSize: "0.875rem",
+                        fontWeight: "500",
+                      }}
+                    >
+                      <span>Read more</span>
+                      <i className="fas fa-external-link-alt"></i>
+                    </div>
+                  </div>
+                </article>
               );
             } else {
               return (
-                <li
+                <div
                   key={idx}
                   style={{
-                    fontSize: "14px",
-                    marginBottom: "8px",
-                    color: "#999",
+                    padding: "1rem",
+                    background: "#f1f3f4",
+                    border: "1px solid #dadce0",
+                    borderRadius: "8px",
+                    color: "#5f6368",
+                    textAlign: "center",
+                    fontStyle: "italic",
                   }}
                 >
-                  No Title
-                </li>
+                  <i
+                    className="fas fa-file-alt"
+                    style={{ marginRight: "0.5rem" }}
+                  ></i>
+                  No title available
+                </div>
               );
             }
           } else {
             return (
-              <li
+              <div
                 key={idx}
                 style={{
-                  fontSize: "14px",
-                  marginBottom: "8px",
-                  color: "#999",
+                  padding: "1rem",
+                  background: "#f1f3f4",
+                  border: "1px solid #dadce0",
+                  borderRadius: "8px",
+                  color: "#5f6368",
+                  textAlign: "center",
+                  fontStyle: "italic",
                 }}
               >
-                No Item
-              </li>
+                <i
+                  className="fas fa-exclamation-circle"
+                  style={{ marginRight: "0.5rem" }}
+                ></i>
+                No content available
+              </div>
             );
           }
         })}
-      </ol>
+      </div>
+
+      {articles.length === 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "3rem 1rem",
+            color: "#718096",
+          }}
+        >
+          <i
+            className="fas fa-search"
+            style={{
+              fontSize: "3rem",
+              marginBottom: "1rem",
+              display: "block",
+              opacity: 0.3,
+            }}
+          ></i>
+          <div style={{ fontSize: "1.1rem", marginBottom: "0.5rem" }}>
+            No articles found
+          </div>
+          <div style={{ fontSize: "0.9rem" }}>
+            Try adjusting your search terms or creating a new query
+          </div>
+        </div>
+      )}
     </div>
   );
 }
