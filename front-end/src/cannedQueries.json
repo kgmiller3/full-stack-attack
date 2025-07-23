@@ -1,0 +1,20 @@
+[
+  {
+    "queryName": "Canned03",
+    "q": "Weather",
+    "language": "en",
+    "pageSize": "5"
+  },
+  {
+    "queryName": "Canned02",
+    "q": "Sports",
+    "language": "en",
+    "pageSize": "5"
+  },
+  {
+    "queryName": "Canned01",
+    "q": "News",
+    "language": "en",
+    "pageSize": 5
+  }
+]
