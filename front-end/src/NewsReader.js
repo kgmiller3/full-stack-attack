@@ -52,6 +52,9 @@ export function NewsReader() {
     if (currentUser !== null) {
       // logout
       setCurrentUser(null);
+      setData({ articles: [], totalResults: 0 });
+      setQueryFormObject({ ...exampleQuery });
+      setQuery(null);
     } else {
       // login
       try {
@@ -63,13 +66,10 @@ export function NewsReader() {
         if (response.status === 200) {
           setCurrentUser({ ...credentials });
           setCredentials({ user: "", password: "" });
-          setQueryFormObject({
-            queryName: "",
-            q: "",
-            language: "",
-            pageSize: "",
-          });
+          setQueryFormObject({ ...exampleQuery });
           getQueryList();
+          setData({ articles: [], totalResults: 0 });
+          setQuery(null);
         } else {
           alert(
             "Error during authentication! " +
