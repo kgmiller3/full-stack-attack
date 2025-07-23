@@ -61,9 +61,13 @@ export function NewsReader() {
         if (response.status === 200) {
           setCurrentUser({ ...credentials });
           setCredentials({ user: "", password: "" });
-          setQueryFormObject({ queryName: "", q: "", language: "", pageSize: "" });
+          setQueryFormObject({
+            queryName: "",
+            q: "",
+            language: "",
+            pageSize: "",
+          });
           getQueryList();
-
         } else {
           alert(
             "Error during authentication! " +
@@ -170,20 +174,22 @@ export function NewsReader() {
         />
       </div>
 
-      <div className="card-modern">
-        <div className="card-header">
-          <i className="fas fa-search"></i>
-          <span>Create Query</span>
+      {currentUser !== null && (
+        <div className="card-modern">
+          <div className="card-header">
+            <i className="fas fa-search"></i>
+            <span>Create Query</span>
+          </div>
+          <div className="card-content">
+            <QueryForm
+              currentUser={currentUser}
+              setFormObject={setQueryFormObject}
+              formObject={queryFormObject}
+              submitToParent={onFormSubmit}
+            />
+          </div>
         </div>
-        <div className="card-content">
-          <QueryForm
-            currentUser={currentUser}
-            setFormObject={setQueryFormObject}
-            formObject={queryFormObject}
-            submitToParent={onFormSubmit}
-          />
-        </div>
-      </div>
+      )}
 
       <div className="card-modern">
         <div className="card-header">
