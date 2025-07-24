@@ -10,7 +10,7 @@ if (!apiKey) {
 
 const baseUrl = "https://newsapi.org/v2/everything";
 
-function addApiKey(queryObject) { 
+function addApiKey(queryObject) {
   return { ...queryObject, apiKey: apiKey };
 }
 
@@ -37,8 +37,9 @@ export async function fetchData(url) {
 
 router.get("/", async (req, res) => {
   let fixedQueryObject = {
-    country: "us",
     q: "news",
+    pageSize: 20,
+    sortBy: "relevancy",
   };
   let queryObject = addApiKey(fixedQueryObject);
   let url = createUrlFromQueryObject(queryObject);
