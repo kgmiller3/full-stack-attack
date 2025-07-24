@@ -82,9 +82,21 @@ code {
   margin: 0 auto;
   padding: 2rem;
   display: grid;
-  grid-template-columns: 350px 320px 1fr;
   gap: 2rem;
   min-height: calc(100vh - 120px);
+  grid-template-columns: 1fr;
+}
+
+/* Specific grid layout when all sections are present (logged in) */
+@media (min-width: 1201px) {
+  .main-container.full-layout {
+    grid-template-columns: 350px 320px 1fr;
+  }
+
+  /* When logged out, ensure proper 2-column layout */
+  .main-container.compact-layout {
+    grid-template-columns: 320px 1fr;
+  }
 }
 
 /* Modern Card Design */
@@ -121,10 +133,20 @@ code {
 
 /* Articles Card - Larger */
 .articles-card {
-  grid-column: span 1;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
+}
+
+/* On larger screens, make articles take remaining space */
+@media (min-width: 1201px) {
+  .full-layout .articles-card {
+    grid-column: 3;
+  }
+  
+  .compact-layout .articles-card {
+    grid-column: 2;
+  }
 }
 
 .articles-content {
@@ -268,7 +290,9 @@ code {
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .main-container {
+  .main-container,
+  .main-container.full-layout,
+  .main-container.compact-layout {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
@@ -279,7 +303,9 @@ code {
 }
 
 @media (max-width: 768px) {
-  .main-container {
+  .main-container,
+  .main-container.full-layout,
+  .main-container.compact-layout {
     padding: 1rem;
     gap: 1rem;
   }

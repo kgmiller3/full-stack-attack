@@ -184,7 +184,7 @@ export function NewsReader() {
   }
 
   return (
-    <div className="main-container">
+    <div className={`main-container ${currentUser !== null ? 'full-layout' : 'compact-layout'}`}>
       <div className="login-container">
         <LoginForm
           login={login}
