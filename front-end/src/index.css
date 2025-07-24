@@ -143,7 +143,7 @@ code {
   .full-layout .articles-card {
     grid-column: 3;
   }
-  
+
   .compact-layout .articles-card {
     grid-column: 2;
   }

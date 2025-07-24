@@ -25,28 +25,26 @@ export function NewsReader() {
   }, [query]);
 
   useEffect(() => {
-    getQueryList();
-  }, [login]);
-
-  async function getQueryList() {
-    if (currentUser === null) {
-      // if no user is logged in, we cannot retrieve saved queries
-      //   alert("Log in if you want to create new queries!");
-      setSavedQueries(cannedQueries);
-
-      return;
-    }
-    try {
-      const response = await fetch(urlQueries);
-      if (response.ok) {
-        const data = await response.json();
-        console.log("savedQueries has been retrieved: ");
-        setSavedQueries(data);
+    async function fetchQueryList() {
+      if (currentUser === null) {
+        // if no user is logged in, we cannot retrieve saved queries
+        setSavedQueries(cannedQueries);
+        return;
       }
-    } catch (error) {
-      console.error("Error fetching news:", error);
+      try {
+        const response = await fetch(urlQueries);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("savedQueries has been retrieved: ");
+          setSavedQueries(data);
+        }
+      } catch (error) {
+        console.error("Error fetching queries:", error);
+      }
     }
-  }
+
+    fetchQueryList();
+  }, [currentUser]);
 
   async function login() {
     if (currentUser !== null) {
@@ -67,7 +65,6 @@ export function NewsReader() {
           setCurrentUser({ ...credentials });
           setCredentials({ user: "", password: "" });
           setQueryFormObject({ ...exampleQuery });
-          getQueryList();
           setData({ articles: [], totalResults: 0 });
           setQuery(null);
         } else {
@@ -184,7 +181,11 @@ export function NewsReader() {
   }
 
   return (
-    <div className={`main-container ${currentUser !== null ? 'full-layout' : 'compact-layout'}`}>
+    <div
+      className={`main-container ${
+        currentUser !== null ? "full-layout" : "compact-layout"
+      }`}
+    >
       <div className="login-container">
         <LoginForm
           login={login}
